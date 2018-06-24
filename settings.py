@@ -20,6 +20,9 @@ current_time = 1.0
 nb_neuron_per_layer = 100
 
 nb_input_params = 6
+horizontal_symetry = False
+vertical_symetry = False
+
 weights_mean = 0.0
 max_weights_std = 20
 latent_std = 100

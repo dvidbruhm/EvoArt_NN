@@ -42,6 +42,11 @@ def create_grid(x_dim, y_dim, scale = 1.0):
     cosx = np.cos(x)
     cosy = np.cos(y)
 
+    if settings.horizontal_symetry:
+        x = x ** 2
+    if settings.vertical_symetry:
+        y = y ** 2
+
     return x, y, r, time, cosx, cosy
 
 def normalize(data, max_value=1):
