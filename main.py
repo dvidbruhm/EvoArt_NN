@@ -22,9 +22,6 @@ if __name__ == "__main__":
     image = None
     current_net = None
 
-    # temp
-    latent = np.random.normal(0, 1, 1)
-    latent_vec = np.repeat(latent, params.image_size ** 2).reshape(params.image_size ** 2, -1)
 
     while True:
         events = pygame.event.get()
@@ -33,22 +30,25 @@ if __name__ == "__main__":
 
         if params.generate_next:
             #current_net = models.Net().to(params.device)
+            # temp
+            latent = np.random.normal(0, 100, 1)
+            latent_vec = np.repeat(latent, params.image_size ** 2).reshape(params.image_size ** 2, -1)
 
             for i in range(1):
 
                 for j in range(1):
-                    params.weight_std = np.random.randint(4, 10)
-                    params.coord_scale = np.random.randint(1, 6)
-                    nb_hidden_layers = np.random.randint(0, 4)
+                    params.weight_std = np.random.randint(1, 20)
+                    params.coord_scale = np.random.randint(1, 10)
+                    nb_hidden_layers = np.random.randint(1, 8)
                     nb_neurons = np.random.randint(1, 100)
 
-                    current_net = models.Net(nb_hidden_layers, 100).to(params.device)
+                    current_net = models.Net(5, 100).to(params.device)
 
                     image = graphics.net_to_image(current_net, latent_vec)
 
                     graphics.draw_image(screen, image, x=j*params.image_resolution, y=i*params.image_resolution)
 
-                    print("[scale=", params.coord_scale, ", std=", params.weight_std, ", ", nb_hidden_layers, ", ", nb_neurons, "]")
+                    print("[scale=", params.coord_scale, ", std=", params.weight_std, ", ", nb_hidden_layers, ", ", nb_neurons, ", ", latent, "]")
 
 
         if params.animate and image is not None:

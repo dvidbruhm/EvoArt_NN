@@ -1,7 +1,7 @@
 image_size = 300
 image_resolution = 300
 channels = 3
-nb_input_params = 4
+nb_input_params = 6
 
 coord_scale = 5
 
@@ -13,7 +13,7 @@ time_step = 0.2
 current_time = 1.0
 
 weight_mean = 0.0
-weight_std = 5
+weight_std = 50
 
 #device = "cpu"
 device = "cuda:0"

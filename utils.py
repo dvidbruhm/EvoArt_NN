@@ -38,12 +38,11 @@ def create_grid(x_dim, y_dim, scale = 1.0):
     x = np.ravel(X).reshape(-1, 1)
     y = np.ravel(Y).reshape(-1, 1)
     r = np.sqrt(x ** 2 + y ** 2)
+    time = np.ones_like(x) * params.current_time
     cosx = np.cos(x)
     cosy = np.cos(y)
-    time = np.ones_like(x) * params.current_time
 
     return x, y, r, time, cosx, cosy
-
 
 def normalize(data, max_value=1):
     min = np.min(data)
