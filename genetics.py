@@ -15,7 +15,7 @@ def create_random_individual():
         nn.Tanh()
     )
 
-    individual.print_attributes()
+    #individual.print_attributes()
 
     return individual
 

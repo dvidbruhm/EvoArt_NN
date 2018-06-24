@@ -19,7 +19,7 @@ current_time = 1.0
 
 nb_neuron_per_layer = 100
 
-nb_input_params = 6
+nb_input_params = 9
 horizontal_symetry = False
 vertical_symetry = False
 
