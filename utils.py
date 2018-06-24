@@ -4,7 +4,7 @@ import numpy as np
 import pygame
 import sys
 
-import params
+import settings
 
 def handle_inputs(events):
     for event in events:
@@ -12,20 +12,20 @@ def handle_inputs(events):
             sys.exit()
         if event.type == pygame.KEYDOWN:
             if event.key == pygame.K_RETURN:
-                params.generate_next = True
+                settings.generate_next = True
                 return
             if event.key == pygame.K_SPACE:
-                params.animate = not params.animate
+                settings.animate = not settings.animate
                 return
         if event.type == pygame.MOUSEBUTTONDOWN and (pygame.mouse.get_pressed()[0] or pygame.mouse.get_pressed()[2]):
         
             mouse_pos = pygame.mouse.get_pos()
     
-    params.generate_next = False
+    settings.generate_next = False
 
 def init_weights(m):
     if type(m) == nn.Linear:
-        m.weight.data.normal_(params.weight_mean, np.sqrt(params.weight_std/m.in_features))
+        m.weight.data.normal_(settings.weights_mean, np.sqrt(np.random.randint(1, settings.max_weights_std)/m.in_features))
         m.bias.data.zero_()
 
 def create_grid(x_dim, y_dim, scale = 1.0):
@@ -38,7 +38,7 @@ def create_grid(x_dim, y_dim, scale = 1.0):
     x = np.ravel(X).reshape(-1, 1)
     y = np.ravel(Y).reshape(-1, 1)
     r = np.sqrt(x ** 2 + y ** 2)
-    time = np.ones_like(x) * params.current_time
+    time = np.ones_like(x) * settings.current_time
     cosx = np.cos(x)
     cosy = np.cos(y)
 
