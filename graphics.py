@@ -6,17 +6,19 @@ from timeit import default_timer as timer
 import params
 import utils
 
-def net_to_image(net):
+def net_to_image(net, latent_vector):
     if params.show_time:
         print("--------------------------------------")
         print("Generating image...")
         start = timer()
 
     inputs = utils.create_grid(params.image_size, params.image_size, params.coord_scale)
+    #print(inputs[0].shape)
+    #print(latent_vector.shape)
+    inputs = inputs[:params.nb_input_params] + (latent_vector,)
+    #print(inputs.shape)
 
-    input = np.concatenate(inputs[:params.nb_params], axis=1)
-    #lat = np.random.normal(0,1,1)
-    #Z = np.repeat(lat, x.shape[0]).reshape(-1, x.shape[0])
+    input = np.concatenate(inputs, axis=1)
 
     with torch.no_grad():
         input = torch.Tensor(input).to(params.device)

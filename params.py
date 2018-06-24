@@ -1,22 +1,22 @@
-image_size = 50
-image_resolution = 50
-channels = 1
-nb_params = 2
+image_size = 300
+image_resolution = 300
+channels = 3
+nb_input_params = 4
 
-coord_scale = 1
+coord_scale = 5
 
 grid_size = 5
-win_size = (250, 250)
+win_size = (300, 300)
 
 time_scale = 10
-time_step = 1
+time_step = 0.2
 current_time = 1.0
 
 weight_mean = 0.0
-weight_std = 1
+weight_std = 5
 
-device = "cpu"
-#device = "cuda:0"
+#device = "cpu"
+device = "cuda:0"
 #device = torch.device("cuda:0" if torch.cuda.is_available() else "cpu")
 
 show_time = False

@@ -42,7 +42,7 @@ def create_grid(x_dim, y_dim, scale = 1.0):
     cosy = np.cos(y)
     time = np.ones_like(x) * params.current_time
 
-    return x, y, r, cosx, cosy, time
+    return x, y, r, time, cosx, cosy
 
 
 def normalize(data, max_value=1):

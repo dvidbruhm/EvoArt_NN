@@ -5,25 +5,21 @@ import utils
 import params
 
 class Net(nn.Module):
-    def __init__(self):
+    def __init__(self, depth, nb_neurons_per_layer):
         super(Net, self).__init__()
 
-        self.layer1 = nn.Linear(params.nb_params, 100)
-        self.layer2 = nn.Sequential(
-            nn.Linear(100, 100),
-            nn.Tanh(),
-            nn.Linear(100, 100),
-            nn.Tanh(),
-            nn.Linear(100, 100),
-            nn.Tanh(),
-            nn.Linear(100, params.channels),
-            nn.Tanh()
-        )
+        self.whole_net = nn.Sequential(nn.Linear(params.nb_input_params + 1, nb_neurons_per_layer))
 
+        for i in range(depth):
+            self.whole_net.add_module("hidden_layer_" + str(i), nn.Linear(nb_neurons_per_layer, nb_neurons_per_layer))
+            self.whole_net.add_module("activation_" + str(i), nn.Tanh())
+        
+        self.whole_net.add_module("output_layer", nn.Linear(nb_neurons_per_layer, params.channels))
+        self.whole_net.add_module("output_activation", nn.Tanh())
+        
         self.apply(utils.init_weights)
     
     def forward(self, input):
-        output = self.layer1(input)
-        output = self.layer2(output)
+        output = self.whole_net(input)
         return output
     
