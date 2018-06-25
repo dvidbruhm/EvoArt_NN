@@ -23,6 +23,12 @@ def handle_inputs(events):
     
     settings.generate_next = False
 
+def get_index(mouse_pos, offset):
+    i = int((mouse_pos[0] - settings.padding / 2 - offset[0]) / (settings.image_resolution+settings.padding))
+    j = int((mouse_pos[1] - settings.padding / 2 - offset[1]) / (settings.image_resolution+settings.padding))
+    index = j*settings.grid_size + i
+    return index
+
 def init_weights(m):
     if type(m) == nn.Linear:
         m.weight.data.normal_(settings.weights_mean, np.sqrt(np.random.randint(1, settings.max_weights_std)/m.in_features))

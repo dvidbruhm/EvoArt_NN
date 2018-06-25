@@ -6,20 +6,31 @@ from timeit import default_timer as timer
 import settings
 import utils
 
-def draw_population(screen, population):
+def draw_population(screen, population, offset=(0,0)):
+
+    ### clear screen before drawing
+    screen.fill((0,0,0))
+
     images = []
     for individual in population:
         images.append(individual_to_image(individual))
     
-    grid_size = int(np.sqrt(len(images)))
-    for i in range(grid_size):
-        for j in range(grid_size):
-            image = images[i*grid_size + j]
-            x = settings.padding+(i * (settings.image_resolution + settings.padding))
-            y = settings.padding+(j * (settings.image_resolution + settings.padding))
-            
-            draw_image(screen, image, x, y)
+    #grid_size = int(np.ceil(np.sqrt(len(images))))
 
+    for i in range(settings.grid_size):
+        for j in range(settings.grid_size):
+            index = i*settings.grid_size + j
+            if index < len(images):
+                image = images[index]
+                x = settings.padding+(j * (settings.image_resolution + settings.padding))
+                y = settings.padding+(i * (settings.image_resolution + settings.padding))
+                
+                draw_image(screen, image, x + offset[0], y + offset[1])
+
+def draw_selection(indices):
+    for i in indices:
+        #TODO
+        pass
 
 def individual_to_image(individual):
     if settings.show_generation_time:
