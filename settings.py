@@ -27,8 +27,8 @@ nb_neuron_per_layer = 15
 init_nb_layers = 4
 
 nb_input_params = 9
-horizontal_symetry = False
-vertical_symetry = False
+horizontal_symetry = True
+vertical_symetry = True
 
 weights_mean = 0.0
 max_weights_std = 20

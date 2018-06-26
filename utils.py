@@ -54,6 +54,8 @@ def create_grid(x_dim, y_dim, scale = 1.0):
 
     if settings.horizontal_symetry:
         x = x ** 2
+        sum = sum ** 2
+        difference = difference ** 2
     if settings.vertical_symetry:
         y = y ** 2
 

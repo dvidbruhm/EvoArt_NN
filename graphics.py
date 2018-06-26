@@ -6,16 +6,7 @@ from timeit import default_timer as timer
 import settings
 import utils
 
-def draw_population(screen, population, offset=(0,0)):
-
-    ### clear screen before drawing
-    screen.fill((0,0,0))
-
-    images = []
-    for individual in population:
-        images.append(individual_to_image(individual))
-    
-    #grid_size = int(np.ceil(np.sqrt(len(images))))
+def draw_images(screen, images, offset=(0,0)):
 
     for i in range(settings.grid_size):
         for j in range(settings.grid_size):
@@ -26,11 +17,35 @@ def draw_population(screen, population, offset=(0,0)):
                 y = settings.padding+(i * (settings.image_resolution + settings.padding))
                 
                 draw_image(screen, image, x + offset[0], y + offset[1])
+    
+    pygame.display.flip()
 
-def draw_selection(indices):
-    for i in indices:
-        #TODO
-        pass
+def draw_selection(screen, indices, offset):
+
+    color = (100, 255, 100)
+
+    ### clear screen before drawing
+    screen.fill((0,0,0))
+
+    for index in indices:
+        i = int(index / settings.grid_size)
+        j = index % settings.grid_size
+
+        x = (j * (settings.image_resolution + settings.padding)) + settings.padding*0.66 + offset[0]
+        y = (i * (settings.image_resolution + settings.padding)) + settings.padding*0.66 + offset[1]
+        size = settings.image_resolution + settings.padding * 0.66
+        
+        pygame.draw.rect(screen, color, (x, y, size, size))
+
+    #pygame.display.flip()
+
+def population_to_images(population):
+    images = []
+
+    for individual in population:
+        images.append(individual_to_image(individual))
+
+    return images
 
 def individual_to_image(individual):
     if settings.show_generation_time:
@@ -105,5 +120,4 @@ def draw_image(screen, image, x = 0, y = 0, resolution = settings.image_resoluti
     surface = pygame.surfarray.make_surface(image)
     surface = pygame.transform.scale(surface, (resolution, resolution))
     screen.blit(surface, (x, y))
-    pygame.display.flip()
 

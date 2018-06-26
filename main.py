@@ -27,7 +27,8 @@ if __name__ == "__main__":
     generate_next = False
     animate = False
     population = genetics.fill_population([], settings.population_size)
-    graphics.draw_population(screen, population, offset=grid_offset)
+    images = graphics.population_to_images(population)
+    graphics.draw_images(screen, images, offset=grid_offset)
 
     selected_indices = []
 
@@ -58,14 +59,21 @@ if __name__ == "__main__":
                     else:
                         selected_indices.append(index)
 
-                    print(selected_indices)
+                    graphics.draw_selection(screen, selected_indices, grid_offset)
+                    graphics.draw_images(screen, images, offset=grid_offset)
 
         if generate_next:
+            
+            ### clear screen before drawing
+            screen.fill((0,0,0))
 
-            population = genetics.next_generation(population[0:5], settings.population_size)
-            graphics.draw_population(screen, population, offset=grid_offset)
+            selected_individuals = [population[i] for i in selected_indices]
+            population = genetics.next_generation(selected_individuals, settings.population_size)
+            images = graphics.population_to_images(population)
+            graphics.draw_images(screen, images, offset=grid_offset)
 
             generate_next = False
+            selected_indices = []
 
         if animate:
 
@@ -76,6 +84,7 @@ if __name__ == "__main__":
 
             settings.current_time += sign * settings.time_step
 
-            graphics.draw_population(screen, population, offset=grid_offset)
+            images = graphics.population_to_images(population)
+            graphics.draw_images(screen, images, offset=grid_offset)
         
         pygame.time.wait(10)
