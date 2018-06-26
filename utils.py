@@ -6,22 +6,43 @@ import sys
 
 import settings
 
-def handle_inputs(events):
+class State:
+    selected_indices = []
+    generate_next = False
+    animate = False
+    selection_changed = False
+
+    def reset(self):
+        self.selected_indices = []
+        self.generate_next = False
+        self.animate = False
+        self.selection_changed = False
+
+def handle_inputs(events, state):
     for event in events:
         if event.type == pygame.QUIT: 
             sys.exit()
         if event.type == pygame.KEYDOWN:
             if event.key == pygame.K_RETURN:
-                settings.generate_next = True
-                return
+                state.generate_next = True
+                break
             if event.key == pygame.K_SPACE:
-                settings.animate = not settings.animate
-                return
+                state.animate = not state.animate
+                break
         if event.type == pygame.MOUSEBUTTONDOWN and (pygame.mouse.get_pressed()[0] or pygame.mouse.get_pressed()[2]):
         
             mouse_pos = pygame.mouse.get_pos()
-    
-    settings.generate_next = False
+            if mouse_pos[0] > settings.grid_offset[0] + settings.padding / 2 and mouse_pos[0] < settings.window_size[0] - settings.padding / 2 and  \
+                mouse_pos[1] > settings.grid_offset[1] + settings.padding / 2 and mouse_pos[1] < settings.window_size[1] - settings.padding / 2:
+            
+                index = get_index(mouse_pos, settings.grid_offset)
+
+                if index in state.selected_indices:
+                    state.selected_indices.remove(index)
+                else:
+                    state.selected_indices.append(index)
+
+                state.selection_changed = True
 
 def get_index(mouse_pos, offset):
     i = int((mouse_pos[0] - settings.padding / 2 - offset[0]) / (settings.image_resolution+settings.padding))

@@ -19,8 +19,6 @@ def next_generation(selected_individuals, size):
                 parent2 = selected_individuals[j]
 
                 child1, child2 = crossover(parent1, parent2)
-                print(len(child1.net.hidden_layers))
-                print(len(child2.net.hidden_layers))
                 next_population.append(child1)
                 if len(next_population) < size:
                     next_population.append(child2)

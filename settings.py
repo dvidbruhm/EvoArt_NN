@@ -14,6 +14,7 @@ max_coord_scale = 10
 
 padding = 20
 grid_size = 5
+grid_offset = (0, 100)
 
 ### animation settings
 
