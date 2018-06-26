@@ -23,10 +23,10 @@ def next_generation(selected_individuals, size):
                 if len(next_population) < size:
                     next_population.append(child2)
 
-    next_population = fill_population(next_population, size)
-
     ### Mutation : each new individual has a chance of mutating
     mutation(next_population, settings.mutation_probability)
+
+    next_population = fill_population(next_population, size)
 
     return next_population
 
@@ -63,7 +63,6 @@ def crossover(parent1, parent2):
 
     max_crossover = np.minimum(len(parent1.net.hidden_layers), len(parent2.net.hidden_layers))
     crossover_point = np.random.randint(1, max_crossover + 1) # +1 because max value is exclusive
-    print(crossover_point)
 
     # Convert the nn.Sequantial object to list so it supports slicing
     layers1 = list(child1.net.hidden_layers)
@@ -100,3 +99,4 @@ class Individual:
                 del layers[rand_index]
 
             self.net.hidden_layers = nn.Sequential(*layers)
+            self.net.to(settings.device)
