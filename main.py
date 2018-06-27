@@ -20,6 +20,14 @@ if __name__ == "__main__":
     ### pygame init
     pygame.init()
     screen = pygame.display.set_mode(settings.window_size)
+    myfont = pygame.font.SysFont('Comic Sans MS', 30)
+
+    ### buttons
+    next_button = graphics.Button(screen, settings.window_size[0] - 100 - 50, settings.grid_offset[1]/2 - 25, 100, 50, "Next", myfont, (0, 255, 0), (0, 255, 0), toggle=False)
+    next_button.draw()
+
+    animate_button = graphics.Button(screen, 50, settings.grid_offset[1]/2 - 25, 100, 50, "Animate", myfont, (255, 0, 0), (0, 0, 255), toggle=True)
+    animate_button.draw()
 
     ### init
     sign = 1.0
@@ -28,9 +36,11 @@ if __name__ == "__main__":
     images = graphics.population_to_images(population)
     graphics.draw_images(screen, images, offset=settings.grid_offset)
 
+
     while True:
         events = pygame.event.get()
-        utils.handle_inputs(events, state)
+        utils.handle_inputs(events, state, next_button, animate_button)
+        
 
         # Draw selection highlight if the selection changed
         if state.selection_changed:
@@ -44,7 +54,8 @@ if __name__ == "__main__":
         if state.generate_next:
             
             ### clear screen before drawing
-            screen.fill((0,0,0))
+            utils.fill_image_grid(screen)
+            next_button.draw()
 
             selected_individuals = [population[i] for i in state.selected_indices]
             population = genetics.next_generation(selected_individuals, settings.population_size)
@@ -67,4 +78,5 @@ if __name__ == "__main__":
             images = graphics.population_to_images(population)
             graphics.draw_images(screen, images, offset=settings.grid_offset)
         
+        pygame.display.flip()
         pygame.time.wait(10)

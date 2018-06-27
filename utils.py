@@ -18,7 +18,7 @@ class State:
         self.animate = False
         self.selection_changed = False
 
-def handle_inputs(events, state):
+def handle_inputs(events, state, next_button, animate_button):
     for event in events:
         if event.type == pygame.QUIT: 
             sys.exit()
@@ -32,6 +32,17 @@ def handle_inputs(events, state):
         if event.type == pygame.MOUSEBUTTONDOWN and (pygame.mouse.get_pressed()[0] or pygame.mouse.get_pressed()[2]):
         
             mouse_pos = pygame.mouse.get_pos()
+
+            ### buttons
+            if next_button.is_clicked(mouse_pos):
+                next_button.click()
+                state.generate_next = True
+
+            if animate_button.is_clicked(mouse_pos):
+                animate_button.click()
+                state.animate = not state.animate
+
+            ### Image selection
             if mouse_pos[0] > settings.grid_offset[0] + settings.padding / 2 and mouse_pos[0] < settings.window_size[0] - settings.padding / 2 and  \
                 mouse_pos[1] > settings.grid_offset[1] + settings.padding / 2 and mouse_pos[1] < settings.window_size[1] - settings.padding / 2:
             
@@ -91,3 +102,13 @@ def normalize(data, max_value=1):
     if max - min < 0.01:
         return data
     return (data - min)/(max - min) * max_value
+
+def fill_image_grid(screen, color=(0, 0, 0)):
+    
+    screen.fill((0,0,0), rect=(
+        settings.grid_offset[0], 
+        settings.grid_offset[1], 
+        settings.window_size[0]-settings.grid_offset[0], 
+        settings.window_size[1]-settings.grid_offset[1]
+        )
+    )

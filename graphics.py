@@ -6,8 +6,57 @@ from timeit import default_timer as timer
 import settings
 import utils
 
-def draw_images(screen, images, offset=(0,0)):
+class Button:
+    def __init__(self, screen, x, y, width, height, text, font, color, clicked_color, toggle=False):
+        self.screen = screen
+        self.x = x
+        self.y = y
+        self.width = width
+        self.height = height
+        self.text = text
+        self.font = font
+        self.color = color
+        self.clicked_color = clicked_color
+        self.toggle = toggle
 
+        self.clicked = False
+    
+    def draw(self):
+        if self.clicked:
+            pygame.draw.rect(self.screen, self.color, (self.x, self.y, self.width, self.height))
+        else:
+            pygame.draw.rect(self.screen, self.clicked_color, (self.x, self.y, self.width, self.height))
+
+        text_surface = self.font.render(self.text, False, (0, 0, 0))
+        text_rect = text_surface.get_rect()
+        self.screen.blit(text_surface,(self.x + self.width/2 - text_rect.width/2, self.y + self.height/2 - text_rect.height/2))
+
+    def is_clicked(self, mouse_pos):
+        if mouse_pos[0] > self.x and mouse_pos[0] < self.x + self.width and   \
+           mouse_pos[1] > self.y and mouse_pos[1] < self.y + self.height:
+
+            return True
+        
+        return False
+
+    def click(self):
+        if self.toggle:
+            self.clicked = not self.clicked
+        
+        self.draw()
+
+
+def draw_images(screen, images, offset=(0,0)):
+    
+    pygame.draw.rect(screen, (255, 255, 255), (
+        settings.grid_offset[0],
+        settings.grid_offset[1],
+        settings.window_size[0] - settings.grid_offset[0],
+        settings.window_size[1] - settings.grid_offset[1]
+        ),
+        3
+    )
+    
     for i in range(settings.grid_size):
         for j in range(settings.grid_size):
             index = i*settings.grid_size + j
@@ -18,14 +67,14 @@ def draw_images(screen, images, offset=(0,0)):
                 
                 draw_image(screen, image, x + offset[0], y + offset[1])
     
-    pygame.display.flip()
+    #pygame.display.flip()
 
 def draw_selection(screen, indices, offset):
 
     color = (100, 255, 100)
 
     ### clear screen before drawing
-    screen.fill((0,0,0))
+    utils.fill_image_grid(screen)
 
     for index in indices:
         i = int(index / settings.grid_size)
