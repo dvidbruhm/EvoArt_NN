@@ -35,6 +35,7 @@ if __name__ == "__main__":
     population = genetics.fill_population([], settings.population_size)
     images = graphics.population_to_images(population)
     graphics.draw_images(screen, images, offset=settings.grid_offset)
+    pygame.display.set_caption("Evolutionary CPPN")
 
 
     while True:

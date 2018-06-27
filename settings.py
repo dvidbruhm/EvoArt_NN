@@ -10,7 +10,7 @@ image_size = 100
 image_resolution = 100
 channels = 3                # 1 for black/white or 3 for colors
 
-max_coord_scale = 10
+max_coord_scale = 3
 
 padding = 20
 grid_size = 5
@@ -32,7 +32,7 @@ horizontal_symetry = False
 vertical_symetry = False
 
 weights_mean = 0.0
-max_weights_std = 20
+max_weights_std = 10
 latent_std = 10
 
 ### pytorch settings
