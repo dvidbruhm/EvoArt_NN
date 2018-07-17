@@ -88,22 +88,22 @@ def draw_selection(screen, indices, offset):
 
     #pygame.display.flip()
 
-def population_to_images(population):
+def population_to_images(population, image_size=settings.image_size):
     images = []
 
     for individual in population:
-        images.append(individual_to_image(individual))
+        images.append(individual_to_image(individual, image_size=image_size))
 
     return images
 
-def individual_to_image(individual):
+def individual_to_image(individual, image_size=settings.image_size):
     if settings.show_generation_time:
         print("--------------------------------------")
         print("Generating image...")
         start = timer()
 
-    inputs = utils.create_grid(settings.image_size, settings.image_size, individual.scale)
-    inputs = inputs[:settings.nb_input_params] + (individual.latent_vector,)
+    inputs = utils.create_grid(image_size, image_size, individual.scale)
+    inputs = inputs[:settings.nb_input_params]# + (individual.latent_vector,)
     inputs = np.concatenate(inputs, axis=1)
 
     with torch.no_grad():
@@ -115,43 +115,7 @@ def individual_to_image(individual):
         for channel in range(settings.channels):
             chan_data = output[:, channel].cpu().numpy()
             chan_data = utils.normalize(chan_data, 255)
-            image.append(chan_data.reshape(settings.image_size, settings.image_size))
-
-        image = np.dstack(image)
-
-        if settings.channels == 1:
-            image = np.repeat(image, 3, axis=2)
-
-    if settings.show_generation_time:
-        end = timer()
-        print("Generation took : ", end - start, " seconds.")
-        print("--------------------------------------")
-
-    return image
-
-
-def net_to_image(net, latent_vector):
-    if settings.show_generation_time:
-        print("--------------------------------------")
-        print("Generating image...")
-        start = timer()
-
-    inputs = utils.create_grid(settings.image_size, settings.image_size, settings.max_coord_scale)
-
-    inputs = inputs[:settings.nb_input_params] + (latent_vector,)
-
-    input = np.concatenate(inputs, axis=1)
-
-    with torch.no_grad():
-        input = torch.Tensor(input).to(settings.device)
-        output = net(input)
-
-        image = []
-
-        for channel in range(settings.channels):
-            chan_data = output[:, channel].cpu().numpy()
-            chan_data = utils.normalize(chan_data, 255)
-            image.append(chan_data.reshape(settings.image_size, settings.image_size))
+            image.append(chan_data.reshape(image_size, image_size))
 
         image = np.dstack(image)
 

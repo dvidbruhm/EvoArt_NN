@@ -20,7 +20,7 @@ if __name__ == "__main__":
     ### pygame init
     pygame.init()
     screen = pygame.display.set_mode(settings.window_size)
-    myfont = pygame.font.SysFont('Comic Sans MS', 30)
+    myfont = pygame.font.SysFont('Comic Sans MS', 18)
 
     ### buttons
     next_button = graphics.Button(screen, settings.window_size[0] - 100 - 50, settings.grid_offset[1]/2 - 25, 100, 50, "Next", myfont, (0, 255, 0), (0, 255, 0), toggle=False)
@@ -28,6 +28,9 @@ if __name__ == "__main__":
 
     animate_button = graphics.Button(screen, 50, settings.grid_offset[1]/2 - 25, 100, 50, "Animate", myfont, (255, 0, 0), (0, 0, 255), toggle=True)
     animate_button.draw()
+
+    save_button = graphics.Button(screen, settings.window_size[0]/2 - 75, settings.grid_offset[1]/2 - 25, 150, 50, "Save selected", myfont, (0, 255, 0), (0, 255, 0), toggle=False)
+    save_button.draw()
 
     ### init
     sign = 1.0
@@ -37,12 +40,10 @@ if __name__ == "__main__":
     graphics.draw_images(screen, images, offset=settings.grid_offset)
     pygame.display.set_caption("Evolutionary CPPN")
 
-
     while True:
         events = pygame.event.get()
-        utils.handle_inputs(events, state, next_button, animate_button)
+        utils.handle_inputs(events, state, next_button, animate_button, save_button)
         
-
         # Draw selection highlight if the selection changed
         if state.selection_changed:
 
@@ -79,5 +80,12 @@ if __name__ == "__main__":
             images = graphics.population_to_images(population)
             graphics.draw_images(screen, images, offset=settings.grid_offset)
         
+        # Save selection
+        if state.save:
+            selected_individuals = [population[i] for i in state.selected_indices]
+            selected_images = [graphics.individual_to_image(ind, image_size=settings.saved_image_resolution) for ind in selected_individuals]
+            utils.save_images(selected_images)
+            state.save = False
+
         pygame.display.flip()
         pygame.time.wait(10)

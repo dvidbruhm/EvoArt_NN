@@ -1,8 +1,10 @@
 import torch
 import torch.nn as nn
+from torchvision.utils import save_image
 import numpy as np
 import pygame
 import sys
+import os
 
 import settings
 
@@ -11,14 +13,16 @@ class State:
     generate_next = False
     animate = False
     selection_changed = False
+    save = False
 
     def reset(self):
         self.selected_indices = []
         self.generate_next = False
         self.animate = False
         self.selection_changed = False
+        self.save = False
 
-def handle_inputs(events, state, next_button, animate_button):
+def handle_inputs(events, state, next_button, animate_button, save_button):
     for event in events:
         if event.type == pygame.QUIT: 
             sys.exit()
@@ -41,6 +45,10 @@ def handle_inputs(events, state, next_button, animate_button):
             if animate_button.is_clicked(mouse_pos):
                 animate_button.click()
                 state.animate = not state.animate
+
+            if save_button.is_clicked(mouse_pos):
+                save_button.click()
+                state.save = True
 
             ### Image selection
             if mouse_pos[0] > settings.grid_offset[0] + settings.padding / 2 and mouse_pos[0] < settings.window_size[0] - settings.padding / 2 and  \
@@ -112,3 +120,15 @@ def fill_image_grid(screen, color=(0, 0, 0)):
         settings.window_size[1]-settings.grid_offset[1]
         )
     )
+
+def save_images(images, path="saved/"):
+    os.makedirs(path, exist_ok=True)
+    existing_images = os.listdir(path)
+    current_index = 0
+    if len(existing_images) > 0:
+        current_index = int(sorted(existing_images)[-1][:-4]) # get index of last saved image
+    
+    for image in images:
+        current_index += 1
+        image_data = torch.Tensor(normalize(image.transpose()))
+        save_image(image_data, path + str(current_index) + ".png")

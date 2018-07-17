@@ -10,7 +10,7 @@ class Net(nn.Module):
 
         self.activation = nn.Tanh()
 
-        self.input_layer = nn.Sequential(nn.Linear(settings.nb_input_params + 1, nb_neurons_per_layer))
+        self.input_layer = nn.Sequential(nn.Linear(settings.nb_input_params, nb_neurons_per_layer))
 
         self.hidden_layers = nn.Sequential()
 

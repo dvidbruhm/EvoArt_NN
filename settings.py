@@ -8,13 +8,15 @@ population_size = 25
 window_size = (620, 720)
 image_size = 100
 image_resolution = 100
-channels = 3                # 1 for black/white or 3 for colors
-
-max_coord_scale = 3
+channels = 1                # 1 for black/white or 3 for colors
 
 padding = 20
 grid_size = 5
 grid_offset = (0, 100)
+
+max_coord_scale = 3
+
+saved_image_resolution = 1000
 
 ### animation settings
 
@@ -32,20 +34,13 @@ horizontal_symetry = False
 vertical_symetry = False
 
 weights_mean = 0.0
-max_weights_std = 10
+max_weights_std = 20
 latent_std = 10
 
 ### pytorch settings
-
-#device = "cpu"
-device = "cuda:0"
-#device = torch.device("cuda:0" if torch.cuda.is_available() else "cpu")
+import torch
+device = torch.device("cuda:0" if torch.cuda.is_available() else "cpu")
 
 ### debug settings
 
 show_generation_time = False
-
-### global variables (do not change)
-
-generate_next = False
-animate = False
