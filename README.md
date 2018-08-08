@@ -1,6 +1,10 @@
 # EvoArt
 Very simple program to create evolutionary art using CPPNs and a genetic algorithm. 
 
+<p align="center">
+  <img src="example.png" width="300" heigth="300"/>
+</p>
+
 # Requirements
 - [python 3](https://www.python.org/)
 - [pygame](https://www.pygame.org/)
