@@ -2,7 +2,7 @@
 Very simple program to create evolutionary art using CPPNs and a genetic algorithm. 
 
 <p align="center">
-  <img src="example.png" width="300" heigth="300"/>
+  <img src="screenshot.png"/>
 </p>
 
 # Requirements
