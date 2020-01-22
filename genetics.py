@@ -1,6 +1,7 @@
 import numpy as np
 import torch.nn as nn
 import copy
+import random
 
 import settings
 import models
@@ -35,7 +36,7 @@ def create_random_individual():
     latent_vec = np.repeat(np.random.normal(0, settings.latent_std, 1), settings.image_size ** 2).reshape(settings.image_size ** 2, -1)
 
     individual = Individual(
-        models.Net(settings.init_nb_layers, settings.nb_neuron_per_layer).to(settings.device),
+        models.Net(random.randint(1, settings.init_nb_layers), settings.nb_neuron_per_layer).to(settings.device),
         latent_vec,
         np.random.randint(1, settings.max_coord_scale),
         nn.Tanh()
