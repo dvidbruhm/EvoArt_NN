@@ -8,6 +8,7 @@ import os
 
 import settings
 
+
 class State:
     selected_indices = []
     generate_next = False
@@ -22,9 +23,10 @@ class State:
         self.selection_changed = False
         self.save = False
 
+
 def handle_inputs(events, state, next_button, animate_button, save_button):
     for event in events:
-        if event.type == pygame.QUIT: 
+        if event.type == pygame.QUIT:
             sys.exit()
         if event.type == pygame.KEYDOWN:
             if event.key == pygame.K_RETURN:
@@ -34,7 +36,7 @@ def handle_inputs(events, state, next_button, animate_button, save_button):
                 state.animate = not state.animate
                 break
         if event.type == pygame.MOUSEBUTTONDOWN and (pygame.mouse.get_pressed()[0] or pygame.mouse.get_pressed()[2]):
-        
+
             mouse_pos = pygame.mouse.get_pos()
 
             ### buttons
@@ -52,8 +54,8 @@ def handle_inputs(events, state, next_button, animate_button, save_button):
 
             ### Image selection
             if mouse_pos[0] > settings.grid_offset[0] + settings.padding / 2 and mouse_pos[0] < settings.window_size[0] - settings.padding / 2 and  \
-                mouse_pos[1] > settings.grid_offset[1] + settings.padding / 2 and mouse_pos[1] < settings.window_size[1] - settings.padding / 2:
-            
+               mouse_pos[1] > settings.grid_offset[1] + settings.padding / 2 and mouse_pos[1] < settings.window_size[1] - settings.padding / 2:
+
                 index = get_index(mouse_pos, settings.grid_offset)
 
                 if index in state.selected_indices:
@@ -63,16 +65,26 @@ def handle_inputs(events, state, next_button, animate_button, save_button):
 
                 state.selection_changed = True
 
+
 def get_index(mouse_pos, offset):
     i = int((mouse_pos[0] - settings.padding / 2 - offset[0]) / (settings.image_resolution+settings.padding))
     j = int((mouse_pos[1] - settings.padding / 2 - offset[1]) / (settings.image_resolution+settings.padding))
     index = j*settings.grid_size + i
     return index
 
+
 def init_weights(m):
     if type(m) == nn.Linear:
-        m.weight.data.normal_(settings.weights_mean, np.sqrt(np.random.randint(1, settings.max_weights_std)/m.in_features))
-        m.bias.data.zero_()
+        mean = settings.weights_mean
+        std = np.sqrt(np.random.randint(1, settings.max_weights_std)/m.in_features)
+        #nn.init.kaiming_uniform_(m.weight, a=0)
+        #nn.init.kaiming_normal_(m.weight, a=0.2)
+        #nn.init.xavier_normal_(m.weight, gain=1)
+        #nn.init.xavier_uniform_(m.weight, gain=1)
+        #m.weight.data.uniform_(-1, 1)
+        m.weight.data.normal_(mean, std)
+        m.bias.data.normal_(mean, std)
+
 
 def create_grid(x_dim, y_dim, scale = 1.0):
     N = np.mean((x_dim, y_dim))
@@ -90,7 +102,6 @@ def create_grid(x_dim, y_dim, scale = 1.0):
     sum = x + y
     difference = x - y
 
-
     if settings.horizontal_symetry:
         x = x ** 2
         sum = sum ** 2
@@ -101,25 +112,26 @@ def create_grid(x_dim, y_dim, scale = 1.0):
             sum = sum ** 2
             difference = difference ** 2
 
-
     return x, y, r, time, cosx, cosy, sum, difference
 
 def normalize(data, max_value=1):
     min = np.min(data)
     max = np.max(data)
-    if max - min < 0.01:
-        return data
+    if max - min == 0.0:
+        return data + max_value
     return (data - min)/(max - min) * max_value
 
+
 def fill_image_grid(screen, color=(0, 0, 0)):
-    
+
     screen.fill((0,0,0), rect=(
-        settings.grid_offset[0], 
-        settings.grid_offset[1], 
-        settings.window_size[0]-settings.grid_offset[0], 
+        settings.grid_offset[0],
+        settings.grid_offset[1],
+        settings.window_size[0]-settings.grid_offset[0],
         settings.window_size[1]-settings.grid_offset[1]
         )
     )
+
 
 def save_images(images, path="saved/"):
     os.makedirs(path, exist_ok=True)
@@ -127,7 +139,7 @@ def save_images(images, path="saved/"):
     current_index = 0
     if len(existing_images) > 0:
         current_index = int(sorted(existing_images)[-1][:-4]) # get index of last saved image
-    
+
     for image in images:
         current_index += 1
         image_data = torch.Tensor(normalize(image.transpose()))

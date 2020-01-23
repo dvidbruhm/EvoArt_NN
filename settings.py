@@ -1,6 +1,6 @@
 ### genetic algorithm settings
 
-mutation_probability = 0.5
+mutation_probability = 0.1
 population_size = 25
 
 ### graphics settings
@@ -8,13 +8,13 @@ population_size = 25
 window_size = (620, 720)
 image_size = 100
 image_resolution = 100
-channels = 1                # 1 for black/white or 3 for colors
+channels = 3                # 1 for black/white or 3 for colors
 
 padding = 20
 grid_size = 5
 grid_offset = (0, 100)
 
-max_coord_scale = 3
+max_coord_scale = 5
 
 saved_image_resolution = 1000
 
@@ -26,10 +26,10 @@ current_time = 1.0
 
 ### model settings
 
-nb_neuron_per_layer = 15
+nb_neuron_per_layer = 2
 init_nb_layers = 2
 
-nb_input_params = 6
+nb_input_params = 4
 horizontal_symetry = False
 vertical_symetry = False
 

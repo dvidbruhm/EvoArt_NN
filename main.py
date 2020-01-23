@@ -1,16 +1,12 @@
 import pygame
-import torch
-import numpy as np
-import sys
 
 import utils
 import settings
-import models
 import graphics
 import genetics
 
-if __name__ == "__main__":
 
+if __name__ == "__main__":
     #torch.manual_seed(1111)
     #np.random.seed(1111)
 
@@ -43,7 +39,7 @@ if __name__ == "__main__":
     while True:
         events = pygame.event.get()
         utils.handle_inputs(events, state, next_button, animate_button, save_button)
-        
+
         # Draw selection highlight if the selection changed
         if state.selection_changed:
 
@@ -54,7 +50,7 @@ if __name__ == "__main__":
 
         # Generate next population based on user selection
         if state.generate_next:
-            
+
             ### clear screen before drawing
             utils.fill_image_grid(screen)
             next_button.draw()
@@ -79,7 +75,7 @@ if __name__ == "__main__":
 
             images = graphics.population_to_images(population)
             graphics.draw_images(screen, images, offset=settings.grid_offset)
-        
+
         # Save selection
         if state.save:
             selected_individuals = [population[i] for i in state.selected_indices]

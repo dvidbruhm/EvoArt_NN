@@ -20,7 +20,7 @@ class Button:
         self.toggle = toggle
 
         self.clicked = False
-    
+
     def draw(self):
         if self.clicked:
             pygame.draw.rect(self.screen, self.color, (self.x, self.y, self.width, self.height))
@@ -36,18 +36,18 @@ class Button:
            mouse_pos[1] > self.y and mouse_pos[1] < self.y + self.height:
 
             return True
-        
+
         return False
 
     def click(self):
         if self.toggle:
             self.clicked = not self.clicked
-        
+
         self.draw()
 
 
 def draw_images(screen, images, offset=(0,0)):
-    
+
     pygame.draw.rect(screen, (255, 255, 255), (
         settings.grid_offset[0],
         settings.grid_offset[1],
@@ -56,7 +56,7 @@ def draw_images(screen, images, offset=(0,0)):
         ),
         3
     )
-    
+
     for i in range(settings.grid_size):
         for j in range(settings.grid_size):
             index = i*settings.grid_size + j
@@ -64,9 +64,9 @@ def draw_images(screen, images, offset=(0,0)):
                 image = images[index]
                 x = settings.padding+(j * (settings.image_resolution + settings.padding))
                 y = settings.padding+(i * (settings.image_resolution + settings.padding))
-                
+
                 draw_image(screen, image, x + offset[0], y + offset[1])
-    
+
     #pygame.display.flip()
 
 def draw_selection(screen, indices, offset):
@@ -83,7 +83,7 @@ def draw_selection(screen, indices, offset):
         x = (j * (settings.image_resolution + settings.padding)) + settings.padding*0.66 + offset[0]
         y = (i * (settings.image_resolution + settings.padding)) + settings.padding*0.66 + offset[1]
         size = settings.image_resolution + settings.padding * 0.66
-        
+
         pygame.draw.rect(screen, color, (x, y, size, size))
 
     #pygame.display.flip()
@@ -101,7 +101,6 @@ def individual_to_image(individual, image_size=settings.image_size):
         print("--------------------------------------")
         print("Generating image...")
         start = timer()
-
     inputs = utils.create_grid(image_size, image_size, individual.scale)
     inputs = inputs[:settings.nb_input_params]# + (individual.latent_vector,)
     inputs = np.concatenate(inputs, axis=1)

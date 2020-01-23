@@ -6,6 +6,7 @@ import random
 import settings
 import models
 
+
 def next_generation(selected_individuals, size):
 
     next_population = []
@@ -31,6 +32,7 @@ def next_generation(selected_individuals, size):
 
     return next_population
 
+
 def create_random_individual():
 
     latent_vec = np.repeat(np.random.normal(0, settings.latent_std, 1), settings.image_size ** 2).reshape(settings.image_size ** 2, -1)
@@ -44,18 +46,21 @@ def create_random_individual():
 
     return individual
 
+
 def fill_population(population, size):
 
     if size > len(population):
         for i in range(size - len(population)):
             population.append(create_random_individual())
-    
+
     return population
+
 
 def mutation(population, probablity):
 
     for individual in population:
         individual.mutate(probablity)
+
 
 def crossover(parent1, parent2):
 
@@ -83,9 +88,11 @@ class Individual:
         self.latent_vector = latent_vector
         self.scale = scale
         self.activation_function = activation_function
-    
+
+
     def print_attributes(self):
         print("[latent=", self.latent_vector[0], ", scale=", self.scale, ", activation=", self.activation_function, "]")
+
 
     def mutate(self, probablity):
         if np.random.uniform() < probablity:
